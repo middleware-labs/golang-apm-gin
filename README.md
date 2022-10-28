@@ -17,7 +17,6 @@ import (
 func main() {
 	go track.Track(
 		track.WithConfigTag("service", "service1"),
-		track.WithConfigTag("host", "localhost:4320"),
 		track.WithConfigTag("projectName", "demo-agent-apm"),
 	)
 	r := gin.Default()
