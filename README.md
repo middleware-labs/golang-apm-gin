@@ -15,18 +15,16 @@ import (
 )
 
 func main() {
-	go track.Track(
-		track.WithConfigTag("service", "service1"),
-		track.WithConfigTag("projectName", "demo-agent-apm"),
-	)
 	r := gin.Default()
-	r.Use(g.Middleware("serviceName"))
+	config, _ := track.Track(
+		track.WithConfigTag("service", "your service name"),
+		track.WithConfigTag("projectName", "your project name"),
+	)
+	r.Use(g.Middleware(config))
 	r.GET("/books", FindBooks)
 	r.Run(":8090")
 }
 
 func FindBooks(c *gin.Context) {
-	span := track.SpanFromContext(c.Request.Context())
-	span.SetAttributes(track.String("controller", "books"))
 	c.JSON(http.StatusOK, gin.H{"data": "ok"})
 }
