@@ -66,8 +66,6 @@ github.com/leodido/go-urn v1.4.0 h1:WT9HwE9SGECu3lg4d/dIA+jxlljEa1/ffXKmRjqdmIQ=
 github.com/leodido/go-urn v1.4.0/go.mod h1:bvxc+MVxLKB4z00jd1z+Dvzr47oO32F/QSNjSBOlFxI=
 github.com/mattn/go-isatty v0.0.20 h1:xfD0iDuEKnDkl03q4limB+vH+GxLEtL/jb4xVJSWWEY=
 github.com/mattn/go-isatty v0.0.20/go.mod h1:W+V8PltTTMOvKvAeJH7IuucS94S2C6jfK/D7dTCTo3Y=
-github.com/middleware-labs/golang-apm v1.4.1 h1:GkIcpyv7xwsCFqcPoe71TmNT214Tq8kIL1adUc+e54M=
-github.com/middleware-labs/golang-apm v1.4.1/go.mod h1:EltBPJ5bK+wkenSgKO/oitnIUL+2n2CvrfbQfF9XZ10=
 github.com/middleware-labs/golang-apm v1.4.2 h1:hhopQCFbvoxwgGlr0OSTsQ9Y6vscvFN+Six9y9bIZ6o=
 github.com/middleware-labs/golang-apm v1.4.2/go.mod h1:9SS3IRWtFaVIGnSuI7ywpDdVWF6EvZ1IER90tX9B3uc=
 github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421/go.mod h1:6dJC0mAP4ikYIbvyc7fijjWJddQyLn8Ig3JB5CqoB9Q=
@@ -125,8 +123,6 @@ go.opentelemetry.io/otel/log v0.5.0 h1:x1Pr6Y3gnXgl1iFBwtGy1W/mnzENoK0w0ZoaeOI3i
 go.opentelemetry.io/otel/log v0.5.0/go.mod h1:NU/ozXeGuOR5/mjCRXYbTC00NFJ3NYuraV/7O78F0rE=
 go.opentelemetry.io/otel/metric v1.30.0 h1:4xNulvn9gjzo4hjg+wzIKG7iNFEaBMX00Qd4QIZs7+w=
 go.opentelemetry.io/otel/metric v1.30.0/go.mod h1:aXTfST94tswhWEb+5QjlSqG+cZlmyXy/u8jFpor3WqQ=
-go.opentelemetry.io/otel/sdk v1.29.0 h1:vkqKjk7gwhS8VaWb0POZKmIEDimRCMsopNYnriHyryo=
-go.opentelemetry.io/otel/sdk v1.29.0/go.mod h1:pM8Dx5WKnvxLCb+8lG1PRNIDxu9g9b9g59Qr7hfAAok=
 go.opentelemetry.io/otel/sdk v1.30.0 h1:cHdik6irO49R5IysVhdn8oaiR9m8XluDaJAs4DfOrYE=
 go.opentelemetry.io/otel/sdk v1.30.0/go.mod h1:p14X4Ok8S+sygzblytT1nqG98QG2KYKv++HE0LY/mhg=
 go.opentelemetry.io/otel/sdk/log v0.5.0 h1:A+9lSjlZGxkQOr7QSBJcuyyYBw79CufQ69saiJLey7o=
