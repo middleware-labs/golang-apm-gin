@@ -34,6 +34,8 @@ type StackDetail struct {
 	FunctionBody   string `json:"exception.function_body"`
 	IsFileExternal bool   `json:"exception.is_file_external"`
 	Language       string `json:"exception.language"`
+	StartLine      int    `json:"exception.start_line"`
+	EndLine        int    `json:"exception.end_line"`
 }
 
 // newSourceReader creates a new source reader instance
@@ -100,6 +102,7 @@ func (sr *sourceReader) calculateContextLines(lines [][]byte, line, contextLines
 func isInAppFrame(file string) bool {
 	// Consider frames outside of Go stdlib and vendor directories as in-app
 	if strings.Contains(file, "/go/src/") ||
+		strings.Contains(file, "/go/pkg/mod") ||
 		strings.Contains(file, "vendor/") ||
 		strings.Contains(file, "third_party/") {
 		return false
@@ -108,30 +111,30 @@ func isInAppFrame(file string) bool {
 }
 
 // extractFunctionCode extracts source code around a specific line
-func extractFunctionCode(file string, line int, contextLines int) string {
-	if !isInAppFrame(file) {
-		return ""
-	}
-
+// and returns the code, start line, and end line
+func extractFunctionCode(file string, line int, contextLines int) (string, int, int) {
+	// Always attempt to extract code, even for external files.
 	lines, contextLine := globalSourceReader.readContextLines(file, line, contextLines)
 	if len(lines) == 0 {
-		return ""
+		return "", 0, 0
 	}
 
 	var result strings.Builder
 	for i, lineBytes := range lines {
-		if i == contextLine {
-			result.WriteString(">>> ")
-		} else {
-			result.WriteString("    ")
-		}
 		result.Write(lineBytes)
 		if i < len(lines)-1 {
 			result.WriteString("\n")
 		}
 	}
 
-	return result.String()
+	// Calculate start and end line numbers (1-indexed)
+	startLine := line - contextLine
+	if startLine < 1 {
+		startLine = 1
+	}
+	endLine := startLine + len(lines) - 1
+
+	return result.String(), startLine, endLine
 }
 
 // extractStackTrace extracts detailed stack trace information
@@ -160,7 +163,7 @@ func extractStackTrace(skip int) ([]StackDetail, string) {
 		}
 
 		functionName := extractFunctionName(frame.Function)
-		functionBody := extractFunctionCode(frame.File, frame.Line, 5) // 5 lines of context
+		functionBody, startLine, endLine := extractFunctionCode(frame.File, frame.Line, 5) // 5 lines of context
 
 		stackDetail := StackDetail{
 			FunctionName:   functionName,
@@ -169,6 +172,8 @@ func extractStackTrace(skip int) ([]StackDetail, string) {
 			FunctionBody:   functionBody,
 			IsFileExternal: !isInAppFrame(frame.File),
 			Language:       "go",
+			StartLine:      startLine,
+			EndLine:        endLine,
 		}
 
 		stackDetails = append(stackDetails, stackDetail)
@@ -320,7 +325,7 @@ func CombinedMiddleware(config *tracker.Config) gin.HandlerFunc {
 
 // CombinedMiddlewareWithOtel creates a middleware chain with both OpenTelemetry and enhanced recovery
 // This should be used instead of CombinedMiddleware for proper middleware chaining
-func CombinedMiddlewareWithOtel(config *tracker.Config) []gin.HandlerFunc {
+func MiddlewareExtended(config *tracker.Config) []gin.HandlerFunc {
 	return []gin.HandlerFunc{
 		otelgin.Middleware(config.ServiceName), // OpenTelemetry middleware first
 		CombinedMiddleware(config),             // Then our enhanced recovery
